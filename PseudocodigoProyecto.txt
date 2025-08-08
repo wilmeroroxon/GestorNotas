@@ -1,0 +1,157 @@
+Universidad Mariano Gálvez								
+Facultad: Ingeniería en Sistemas de Información y Ciencias de Computación
+Curso: Algoritmos 
+Docente: Ing. Miguel Catalán
+
+
+
+
+
+
+
+Pseudocódigo Proyecto
+
+
+
+
+						
+
+
+Nombre: Wilmer Missael González Oroxón
+						Carnet: 7590-25-282
+						Sección: A
+						Fecha: 08/08/2025
+
+
+Pseudocódigo
+Inicio
+Estructura
+Cursos(Lista de Cursos)
+nombre.curso
+nota.curso
+
+Mientras opcion =! 13 Hacer 
+Imprimir ===========Gestor de Notas Académicas========
+Imprimir 1. Registrar nuevo curso 
+Imprimir 2. Mostrar todos los cursos y notas 
+Imprimir 3. Calcular promedio general
+Imprimir 4. Contar cursos aprobados y reprobados
+Imprimir 5.  Buscar curso por nombre (búsqueda lineal)
+Imprimir 6. Actualizar nota de un curso
+Imprimir 7.  Eliminar curso
+Imprimir 8. Ordenar cursos por nota
+Imprimir 9. Ordenar cursos por nombre
+Imprimir 10. Buscar curso por nombre 
+Imprimir 11. Simular cola de solicitudes de reviSión
+Imprimir 12 Mostrar historial de cambios
+Imprimir 13.Salir
+Imprimir Seleccione una opción:
+Leer opcion
+Mientras opción =!( >=1 y <=13) hacer
+ Imprimir Seleccione una opción valida:
+Leer opción
+Fin mientras
+Si opcion = 1 entonces
+Imprimir ===== Registrar nuevo curso======
+Imprimir Ingrese el nombre del curso
+Leer nombreCurso
+Imprimir Ingrese la nota del curso
+Leer cursoNota
+Proceso 
+Guardar datos en lista de cursos
+Imprimir Curso Registrado con éxito
+Sino Si opción =2 entonces
+Si Hay cursos ingresados entonces
+Imprimir Lista de cursos y notas
+Sino 
+Imprimir No hay cursos para mostrar
+Fin Si
+Sino SI opción =3 entonces
+Promedio = suma de todas las notas de los cursos dividido cantidad de cursos
+Imprimir Promedio general: Promedio
+Sino Si opción=4 entonces
+Para Cursos(lista de cursos Hacer
+Cursos aprobados = 0
+Cursos reprobados= 0
+Si curso.nota  >= 60 Entonces
+Cursos aprobados= cursos aprobados + 1
+Sino
+Cursos reprobados = cursos reprobados +1
+Fin Si
+Fin Para
+Imprimir Cursos aprobados : cursos aprobados
+Imprimir cursos reprobados: cursos reprobados
+SINO SI opción = 5 entonces 
+Imprimir Buscar curso por nombre
+Imprimir Ingrese el nombre del curso 
+Leer buscarCurso
+Para Cursos(lista de cursos) Hacer
+Si nombre.curso == buscarCurso Entonces
+cursoEncontrado =  nombre.curso ,nota.curso
+Fin Si
+Fin para
+Imprimir cursoEncontrado
+SINO SI opción = 6 entonces 
+Imprimir Actualizar nota de curso
+Imprimir Ingrese el nombre del curso
+Leer NombreCurso
+Para Cursos(lista de cursos) Hacer
+Si NombreCurso == nombre.curso 	Entonces
+Imprimir Ingrese la nueva nota del curso
+Leer nota.curso
+Mientras nota.curso =! (>=1 y <=100) Hacer
+Imprimir Ingrese una nota valida de 1 a 100
+Leer nota.curso
+Fin Mientras
+Agregarla  la estructura del curso y guardarla
+Imprimir Nota actualizada correctamente
+Fin Si
+Fin para
+SINO SI opción = 7 entonces
+Imprimir Eliminar curso
+Imprimir Ingrese el nombre del curso
+Leer curso Nombre
+Para Cursos(lista de cursos) Hacer
+Si nombre.curso == curso Nombre entonces
+Eliminar Curso
+Fin Si 
+Fin Para
+Imprimir Cursos Eliminado
+SINO SI opción = 8 entonces 
+Ordenar los cursos de mayor a menor
+Imprimir Cursos ordenados
+SINO SI opción = 9 entonces
+Ordenar los cursos alfabéticamente
+Imprimir Lista de los cursos
+Sino SI opción = 10 Entonces
+Imprimir Buscar curso por nombre
+Imprimir Ingrese el nombre del curso
+Leer nombre
+Buscar el curso en la lista de cursos
+Imprimir nombre.curso, nota.curso
+SiNO SI opción = 11 Entonces
+Imprimir Simular cola de solicitudes de reviSión
+Imprimir Ingrese los nombres de los cursos que desea enviar a revisar y escriba Fin al terminar
+Leer nombrecurso
+Imprimir nombrecurso revisado
+SINO SI opción =12 Entonces
+Imprimir Historial de cambios recientes
+Imprimir Muestra el historial de cambios
+Sino SI opción = 13 entones
+Imprimir Gracias por usar el Gestor de Notas Academicas
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Si
+Fin Mientras
+Fin
+
