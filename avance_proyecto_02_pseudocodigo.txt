@@ -21,6 +21,7 @@ IMPRIMIR Escriba número valido
 LEER  notaCurso
 FIN MIENTRAS
 
+
 IMPRIMIR Curso Registrado Exitosamente.
 // acumulador de notas
 sumaNotas = sumaNotas + notaCurso
@@ -29,3 +30,4 @@ FIN PARA
 promedio = sumaNotas / N
 
 IMPRIMIR Promedio delas notas es , promedio
+FIN
