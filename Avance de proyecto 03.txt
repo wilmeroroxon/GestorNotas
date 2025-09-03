@@ -1,10 +1,11 @@
 ****Condicionales y Contadores****
 Mostrar cursos y notas
+IMPRIMIR lista_cursos
 Si lista_cursos == " " entonces
 Imprimir No hay cursos para mostrar
-Fin si
+FIN SI 
 
-Calcular promedio
+Calcular promedio General
 Si notaCurso == " "  entonces
 IMPRIMIR No hay cursos registrados
 
@@ -28,10 +29,10 @@ Actualizar Nota de un curso
 IMPRIMIR Ingrese el nombre del curso
 LEER curso.nombre
 PARA variable HASTA lista_cursos HACER
-SI curso.nombre in lista_cursos
+SI curso.nombre in lista_cursos entonces
 IMPRIMIR Ingrese la nota actulizada
 LEER nuevaNota
-curso [1:2] = [nuevaNota]
+curso [2] = nuevaNota
 FIN_SI
 FIN_ PARA
 
