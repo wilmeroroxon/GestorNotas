@@ -1,0 +1,212 @@
+#se crea la lista
+lista_cursos=[]
+#Funcion para agregar un nuevo curso
+def nuevo_curso(nombre,nota):
+    if nota >=60: #evalua para asignar aprobador o reprobado
+        aprobado = "Aprobado"
+    else:
+        aprobado = "Reprobado"
+        
+    return [nombre,nota, aprobado]#Retorna la lista de los datos del cursos
+
+#Funcion para mostrar curso
+def mostrar_cursos(lista_cursos):
+    if not lista_cursos: #evalua si hay cursos en lista_cursos
+        print("No hay cursos registrados.\n")
+    else:
+        print("Cursos registrados:")
+        for i,curso in enumerate(lista_cursos,1): #Hace el recorrido en la lista_cursos
+            nombre, nota, aprobado = curso
+            print(f"{i} Curso: {nombre}, Nota: {nota}, {aprobado}")
+            
+
+#Funcion para mostrar el promedio general
+def promedio_general(lista_cursos):
+    if not lista_cursos: #Evalua si hay cursos en la lista
+        promedio = 0
+    else:
+        suma_notas = 0 
+        cantidad = 0
+        for curso in lista_cursos:
+            nota = curso[1]
+    
+            suma_notas += nota #suma cada nota de cada curso
+            cantidad += 1 #solo aumenta una vez por cada curso
+            promedio = suma_notas / cantidad 
+            
+    return promedio
+        
+    
+def cursos_aprobados(lista_cursos):
+    if not lista_cursos: #Evalua si hay cursos en la lista_cursos
+        none = "No hay cursos registrados.\n"
+    else:
+        aprobado = 0
+        reprobado = 0
+        for curso in lista_cursos:          
+            estado = curso[2]
+            if estado == "Aprobado": #Evalua aprobado o reprobado para luego hacer la suma
+                aprobado +=1
+            else:
+                reprobado +=1
+    
+    return aprobado,reprobado #Retorna dos valores
+
+#Funcion para buscar algun curso 
+def buscar_curso(lista_cursos, busqueda):
+
+    busqueda= busqueda.lower() # convierte la entrada en minusculas
+    encontrados = [] 
+    #buscamos el curso en la lista y se agrega a encontrados
+    for curso in lista_cursos:
+        nombre, nota, estado = curso #desempaqutar los datos de la lista
+        if busqueda in nombre.lower():
+                encontrados.append(curso)
+
+    if encontrados:
+        print(f"\nCursos encontrados con '{busqueda}':")
+        for curso in encontrados:
+            nombre, nota, aprobado = curso #desempaqueta los datos de la lista
+            print(f"- Nombre: {nombre}, Nota: {nota}, Estado: {aprobado}")#Imprime el curso encontrado
+            print()
+    else:
+            print(f"\nNo se encontraron cursos que coincidan con '{busqueda}'.\n")
+
+#Funcion para actualizar nota del curso buscado
+def actualizar_nota(lista_cursos,busqueda, nueva_nota):
+    busqueda= busqueda.lower()
+    encontrados = []
+    #busca el curso en la lista_cursos y la agrega a encontrados
+    for curso in lista_cursos:
+        nombre, nota, estado = curso
+        if busqueda in nombre.lower():
+                encontrados.append(curso)
+
+    if encontrados:
+        for curso in encontrados:
+            nombre, nota, aprobado = curso
+            curso[1] = nueva_nota #agrega nueva nota en el indice 1 de curso (nota)
+            print("Nota actualizada exitosamente")
+    else:
+            print(f"\nNo se encontraron cursos que coincidan con '{busqueda}'.\n")
+
+def eliminar_curso(lista_cursos, busqueda):
+    busqueda = busqueda.lower()
+    encontrados = []
+
+    #busqueda del curso
+    for curso in lista_cursos:
+        nombre, nota, estado = curso
+        if busqueda in nombre.lower():
+            encontrados.append(curso)
+
+    if not encontrados:
+        print(f"No se encontraron cursos que coincidan con '{busqueda}'.\n")
+        return
+
+    #Muestra el resultado de la busqueda    
+    print(f"\nCurso encontrado con '{busqueda}':")
+    for curso in encontrados:
+        nombre, nota, aprobado = curso #desempaqueta los datos de la lista
+        print(f"- Nombre: {nombre}, Nota: {nota}, Estado: {aprobado}")#Imprime el curso encontrado
+        print()
+    
+    curso_a_eliminar = encontrados[0] #Le asinamos el indice cero que est toda la lista nombre,nota y aprobado
+
+    # Confirmar eliminacila eliminacion del curso
+    confirmacion = input(f"¿Está seguro que desea eliminar el curso '{curso_a_eliminar[0]}'? (sí/no): ").strip().lower() #aseguramos de que el dato sea tomado con strip y lower
+    if confirmacion in ['sí', 'si', 's']:
+        lista_cursos.remove(curso_a_eliminar)#Eliminamos el curso si la respuesta es si
+        print(f"Curso '{curso_a_eliminar[0]}' eliminado exitosamente.\n")
+    else:
+        print("Eliminación cancelada.\n") 
+    
+
+
+    
+#Menu Principal
+menu = (
+    "=======   GESTOR DE NOTAS ACADÉMICAS ======\n"
+    "1. Registrar nuevo curso.\n"
+    "2. Mostrar todos los cursos y notas.\n"
+    "3. Calcular promedio general.\n"
+    "4. Contar cursos aprobados y reprobados.\n"
+    "5. Buscar curso por nombre .\n"
+    "6. Actualizar nota de un curso.\n"
+    "7. Eliminar un curso.\n"
+    "8. Ordenar cursos por nota .\n"
+    "9. Ordenar cursos por nombre .\n"
+    "10. Buscar curso por nombre .\n"
+    "11. Simular cola de solicitudes de revision.\n"
+    "12. Mostrar historial de cambios.\n"
+    "13. Salir."
+)
+
+#Ciclo infinito para seleccionar opciones
+while True:
+    print(menu)
+    opcion = int(input("Seleccione un opcion:  ")) 
+    if opcion == 13:
+        print("Fin del programa")
+        break
+    elif opcion == 1:
+        nombre=input("Ingrese el nombre del curso: ")
+        while nombre == "":
+            nombre=input("Ingrese un dato: ")
+
+        nota = int(input("Ingrese la nota del curso: "))
+        
+        while nota == "" or (nota < 0 and nota > 100):
+            nota = int(input("Ingrese un valor valido de 0 a 100: "))
+
+        
+        curso= nuevo_curso(nombre,nota)
+        lista_cursos.append(curso)       
+
+        print("Curso registrado exitosamente,\n")
+    
+    elif opcion == 2:
+        mostrar_cursos(lista_cursos)
+        print()
+        
+    elif opcion == 3:
+        if not lista_cursos:
+            print("No hay cursos registrados.\n")
+        else: 
+            print("El promedio general es: ",promedio_general(lista_cursos),"\n")
+
+    elif opcion == 4:
+        if not lista_cursos:
+            print("No hay cursos registrados.\n")
+        else:
+            aprobado, reprobado = cursos_aprobados(lista_cursos)
+            print("Cursos aprobados: ",aprobado) 
+            print("Cursos reprobados: ",reprobado,"\n")    
+
+    elif opcion == 5:
+        if not lista_cursos:
+            print("No hay cursos registrados")
+        else:
+            busqueda =input("Ingrese el nombre del curso que desea buscar: ")
+            buscar_curso(lista_cursos, busqueda)
+    
+    elif opcion == 6:
+        if not lista_cursos:
+            print("No hay cursos registrados")
+        else:
+            busqueda =input("Ingrese el nombre del curso para modificar nota: ")
+            nueva_nota = int(input("Ingrese la nueva nota"))
+            
+            while nueva_nota == "" or (nueva_nota < 0 and nueva_nota > 100):
+                nueva_nota = int(input("Ingrese un valor valido de 0 a 100: "))
+            
+            actualizar_nota(lista_cursos,busqueda,nueva_nota)
+    
+    elif opcion == 7:
+        if not lista_cursos:
+            print("No hay cursos registrados")
+        else:
+            busqueda =input("Ingrese el nombre del curso que desea eliminar: ")
+            eliminar_curso(lista_cursos,busqueda)
+
+        
