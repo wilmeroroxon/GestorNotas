@@ -1,3 +1,4 @@
+historial= []
 #se crea la lista
 lista_cursos=[]
 #Funcion para agregar un nuevo curso
@@ -73,28 +74,30 @@ def buscar_curso(lista_cursos, busqueda):
             print(f"\nNo se encontraron cursos que coincidan con '{busqueda}'.\n")
 
 #Funcion para actualizar nota del curso buscado
-def actualizar_nota(lista_cursos,busqueda, nueva_nota):
-    busqueda= busqueda.lower()
+def actualizar_nota(lista_cursos, busqueda, nueva_nota):
+    busqueda = busqueda.lower()
     encontrados = []
-    #busca el curso en la lista_cursos y la agrega a encontrados
+
     for curso in lista_cursos:
         nombre, nota, estado = curso
         if busqueda in nombre.lower():
-                encontrados.append(curso)
+            encontrados.append(curso)
 
     if encontrados:
         for curso in encontrados:
-            nombre, nota, aprobado = curso
-            curso[1] = nueva_nota #agrega nueva nota en el indice 1 de curso (nota)
+            nombre, nota_anterior, aprobado = curso
+            curso[1] = nueva_nota
+            curso[2] = "Aprobado" if nueva_nota >= 60 else "Reprobado"  # Actualiza estado también
             print("Nota actualizada exitosamente")
+            historial.append(f"Se actualizó: {nombre} - Nota anterior: {nota_anterior} -> Nueva nota: {nueva_nota}")
     else:
-            print(f"\nNo se encontraron cursos que coincidan con '{busqueda}'.\n")
+        print(f"\nNo se encontraron cursos que coincidan con '{busqueda}'.\n")
+
 
 def eliminar_curso(lista_cursos, busqueda):
     busqueda = busqueda.lower()
     encontrados = []
 
-    #busqueda del curso
     for curso in lista_cursos:
         nombre, nota, estado = curso
         if busqueda in nombre.lower():
@@ -104,23 +107,65 @@ def eliminar_curso(lista_cursos, busqueda):
         print(f"No se encontraron cursos que coincidan con '{busqueda}'.\n")
         return
 
-    #Muestra el resultado de la busqueda    
     print(f"\nCurso encontrado con '{busqueda}':")
     for curso in encontrados:
-        nombre, nota, aprobado = curso #desempaqueta los datos de la lista
-        print(f"- Nombre: {nombre}, Nota: {nota}, Estado: {aprobado}")#Imprime el curso encontrado
+        nombre, nota, aprobado = curso
+        print(f"- Nombre: {nombre}, Nota: {nota}, Estado: {aprobado}")
         print()
-    
-    curso_a_eliminar = encontrados[0] #Le asinamos el indice cero que est toda la lista nombre,nota y aprobado
 
-    # Confirmar eliminacila eliminacion del curso
-    confirmacion = input(f"¿Está seguro que desea eliminar el curso '{curso_a_eliminar[0]}'? (sí/no): ").strip().lower() #aseguramos de que el dato sea tomado con strip y lower
+    curso_a_eliminar = encontrados[0]
+
+    confirmacion = input(f"¿Está seguro que desea eliminar el curso '{curso_a_eliminar[0]}'? (sí/no): ").strip().lower()
     if confirmacion in ['sí', 'si', 's']:
-        lista_cursos.remove(curso_a_eliminar)#Eliminamos el curso si la respuesta es si
+        lista_cursos.remove(curso_a_eliminar)
+        historial.append(f"Se eliminó: {curso_a_eliminar[0]} - {curso_a_eliminar[1]}")
         print(f"Curso '{curso_a_eliminar[0]}' eliminado exitosamente.\n")
     else:
-        print("Eliminación cancelada.\n") 
-    
+        print("Eliminación cancelada.\n")
+
+
+#Funcion para ordenar lista por nombre
+def ordenamiento_por_nombre(lista):
+    comps = moves = 0
+
+    for i in range(1, len(lista)):
+        curso = lista[i]             
+        clave = curso[0].lower()    
+        j = i - 1
+
+        while j >= 0 and lista[j][0].lower() > clave:
+            comps += 1
+            lista[j + 1] = lista[j]         
+            j -= 1
+        lista[j + 1] = curso       
+        moves += 1
+
+    return comps, moves, lista
+
+def solicitud_de_revision():
+    solicitudes = []
+    while True:
+        n= input("Ingrese curso para revisión (escriba 'fin' para terminar): ").upper()
+
+        if n == "FIN":
+            break
+            print()
+        else:
+            solicitudes.append(n)
+
+    print("Procesando solicitudes: ")
+    for i in solicitudes:
+        print(f"Revisando: {i}")
+
+def mostrar_historial():
+    if not historial:
+        print("No hay historial de cambios registrado.\n")
+    else:
+        print("Historial de cambios:")
+        for entrada in historial:
+            print("- " + entrada)
+        print()
+            
 
 
     
@@ -146,6 +191,7 @@ menu = (
 while True:
     print(menu)
     opcion = int(input("Seleccione un opcion:  ")) 
+    print()
     if opcion == 13:
         print("Fin del programa")
         break
@@ -185,14 +231,14 @@ while True:
 
     elif opcion == 5:
         if not lista_cursos:
-            print("No hay cursos registrados")
+            print("No hay cursos registrados. ")
         else:
             busqueda =input("Ingrese el nombre del curso que desea buscar: ")
             buscar_curso(lista_cursos, busqueda)
     
     elif opcion == 6:
         if not lista_cursos:
-            print("No hay cursos registrados")
+            print("No hay cursos registrados. ")
         else:
             busqueda =input("Ingrese el nombre del curso para modificar nota: ")
             nueva_nota = int(input("Ingrese la nueva nota"))
@@ -204,9 +250,49 @@ while True:
     
     elif opcion == 7:
         if not lista_cursos:
-            print("No hay cursos registrados")
+            print("No hay cursos registrados. ")
         else:
             busqueda =input("Ingrese el nombre del curso que desea eliminar: ")
             eliminar_curso(lista_cursos,busqueda)
 
+    elif opcion == 8:
+        if not lista_cursos:
+            print("No hay cursos registrados. ")
+        else:
+            comps, swaps, listaOrdenada = ordenamiento_por_notas(lista_cursos) 
+            print("Cursos ordenados por nota. ")
+            for i,curso in enumerate(listaOrdenada,1): #Hace el recorrido en la lista_cursos
+                nombre, nota, aprobado = curso
+                print(f"{i} Curso: {nombre} - Nota: {nota}")
+
+    elif opcion == 9:
+        if not lista_cursos:
+            print("No hay cursos registrados. ")
+        else:
+            comps, swaps, listaOrdenada = ordenamiento_por_nombre(lista_cursos) 
+            print("Cursos ordenados por nombre. ")
+            for i,curso in enumerate(listaOrdenada,1): #Hace el recorrido en la lista_cursos
+                nombre, nota, aprobado = curso
+                print(f"{i} Curso: {nombre} - Nota: {nota}")
         
+    elif opcion == 10:
+        if not lista_cursos:
+            print("No hay cursos registrados. ")
+        else:
+            comps, swaps, listaOrdenada = ordenamiento_por_nombre(lista_cursos) 
+            busqueda =input("Ingrese el nombre del curso que desea buscar: ")
+            buscar_curso(listaOrdenada, busqueda)
+        
+    elif opcion == 11:
+        if not lista_cursos:
+            print("No hay cursos registrados. ")
+        else:
+            solicitud_de_revision()
+
+    elif opcion == 12:
+        if not lista_cursos:
+            print("No hay cursos registrados. ")
+        else:
+            mostrar_historial()
+
+    
