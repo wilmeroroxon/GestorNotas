@@ -1,0 +1,63 @@
+Manual de Usuario
+Gestor de notas
+Propósito
+Este sistema ha sido diseñado con el propósito de facilitar la gestión y el control de las notas académicas de los cursos registrados por un usuario. Está orientado principalmente a estudiantes, docentes o cualquier persona que desee llevar un registro claro y ordenado de sus asignaturas y calificaciones.
+El sistema permite registrar cursos junto con sus respectivas notas, evaluando automáticamente si la calificación ingresada es aprobada (60 o más) o reprobada. A través de un menú interactivo, el usuario puede consultar todos los cursos registrados, calcular el promedio general de sus notas, y conocer cuántos cursos ha aprobado o reprobado.
+También se pueden realizar búsquedas de cursos por nombre, actualizar calificaciones existentes y eliminar cursos si ya no se desean en el registro. Además, ofrece funcionalidades para ordenar los cursos alfabéticamente o por nota, facilitando la visualización ordenada de la información.
+Que incluye una opción para hacer una revisión de cursos, además cada cambio(modificar nota o eliminar curso) queda guardado en un historial que también se puede mostrar.
+Requisitos para ejecutar el programa
+Para utilizar este sistema, asegúrese de cumplir con los siguientes requisitos:
+Tener instalado Python
+Este programa está desarrollado en el lenguaje Python.
+Se recomienda usar Python 3.8 o superior para garantizar compatibilidad y buen funcionamiento.
+Puede descargar Python desde el sitio oficial:
+https://www.python.org/downloads/
+Sistema operativo compatible
+Windows, macOS o cualquier distribución de Linux.
+El programa se ejecuta desde la consola (modo texto).
+Guarda el programa en un archivo con extensión .py, por ejemplo: gestor_de_notas.py
+¿Cómo ejecutar el programa?: Abre la terminal en la carpeta donde guardaste el archivo y ejecútalo.
+
+Instrucciones para uso de menú
+1. Registrar nuevo curso
+Permite ingresar un nuevo curso junto con su nota.
+1.	Se solicitará el nombre del curso y una nota entre 0 y 100.
+2.	El sistema determinará automáticamente si está aprobado (nota ≥ 60) o reprobado.
+3.	Puedes registrar varios cursos seguidos si así lo deseas.
+2. Mostrar todos los cursos y notas
+Muestra una lista completa de todos los cursos registrados, junto con sus notas y estado (aprobado o reprobado).
+3. Calcular promedio general
+Calcula y muestra el promedio de todas las notas ingresadas. Se necesita que exista al menos un curso registrado, de lo contrario mostrará el mensaje “No hay cursos registrados”
+4. Contar cursos aprobados y reprobados
+Muestra cuántos cursos han sido aprobados y cuántos reprobados según las notas registradas.
+5. Buscar curso por nombre
+Permite buscar un curso escribiendo parte o todo su nombre y se mostrarán todos los cursos que coincidan con la búsqueda.
+6. Actualizar nota de un curso
+Permite cambiar la nota de un curso existente.
+•	Se realiza una búsqueda por nombre del curso.
+•	Se actualiza la nota y el estado (aprobado/reprobado) automáticamente.
+•	Se guarda un registro en el historial.
+________________________________________
+7. Eliminar un curso
+Permite eliminar un curso del sistema.
+1.	Se realiza una búsqueda por nombre.
+2.	Se solicita confirmación antes de eliminar.
+3.	El cambio se registra en el historial.
+8. Ordenar cursos por nota
+Ordena todos los cursos de mayor a menor según su nota y los muestra en pantalla.
+9. Ordenar cursos por nombre
+Ordena todos los cursos en orden alfabético por nombre y los muestra en pantalla.
+10. Buscar curso por nombre
+Realiza la búsqueda de algún curso, solicitará el nombre del curso.
+11. Simular cola de solicitudes de revisión
+Permite ingresar varios cursos para revisión de nota, simulando una cola de atención.
+1.	Escribe los nombres uno por uno.
+2.	Escribe “FIN” para finalizar el ingreso.
+3.	El sistema procesará las solicitudes.
+12. Mostrar historial de cambios
+Muestra todos los cambios realizados en el sistema:
+1.	Actualizaciones de notas.
+2.	Eliminaciones de cursos.
+13. Salir
+Finaliza el programa
+
