@@ -1,157 +1,285 @@
-Universidad Mariano Gálvez								
-Facultad: Ingeniería en Sistemas de Información y Ciencias de Computación
-Curso: Algoritmos 
-Docente: Ing. Miguel Catalán
+INICIO
+    DEFINIR historial 
+    DEFINIR lista_cursos 
+
+    FUNCION nuevo_curso(nombre, nota)
+        SI nota >= 60 ENTONCES
+            aprobado = "Aprobado"
+        SINO
+            aprobado = "Reprobado"
+        FIN SI
+        RETORNAR [nombre, nota, aprobado]
+    FIN FUNCION
 
 
+    PROCEDIMIENTO mostrar_lista(lista)
+        PARA i DESDE 1 HASTA longitud(lista) HACER
+            nombre = lista[i][0]
+            nota = lista[i][1]
+            aprobado = lista[i][2]
+            IMPRIMIR i, "Curso:", nombre, "Nota:", nota, aprobado
+        FIN PARA
+    FIN PROCEDIMIENTO
 
 
+    FUNCION promedio_general(lista)
+        suma_notas = 0
+        cantidad = 0
+        PARA cada curso EN lista HACER
+            nota = curso[1]
+            suma_notas = suma_notas + nota
+            cantidad = cantidad + 1
+        FIN PARA
+
+        resultado = suma_notas / cantidad
+        promedio = REDONDEAR(resultado, 2)
+        RETORNAR promedio
+    FIN FUNCION
+
+FUNCION cursos_aprobados(lista)
+        aprobado = 0
+        reprobado = 0
+        PARA cada curso EN lista HACER
+            estado = curso[2]
+            SI estado = "Aprobado" ENTONCES
+                aprobado = aprobado + 1
+            SINO
+                reprobado = reprobado + 1
+            FIN SI
+        FIN PARA
+        RETORNAR aprobado, reprobado
+    FIN FUNCION
 
 
+    FUNCION buscar_curso(lista, busqueda)
+        busqueda = MINUSCULAS(busqueda)
+        encontrados = LISTA VACÍA
+        PARA cada curso EN lista HACER
+            nombre = curso[0]
+            SI busqueda ESTÁ EN MINUSCULAS(nombre) ENTONCES
+                AÑADIR curso A encontrados
+            FIN SI
+        FIN PARA
+        RETORNAR encontrados
+    FIN FUNCION
 
-Pseudocódigo Proyecto
+    PROCEDIMIENTO mostrar_busqueda(lista, busqueda)
+        SI longitud(lista) > 0 ENTONCES
+            IMPRIMIR "Cursos encontrados con ", busqueda
+            PARA cada curso EN lista HACER
+                IMPRIMIR "Nombre:", curso[0], "Nota:", curso[1], curso[2]
+            FIN PARA
+        SINO
+            IMPRIMIR "No se encontraron cursos con ", busqueda
+        FIN SI
+    FIN PROCEDIMIENTO
+
+    PROCEDIMIENTO actualizar_nota(lista, nueva_nota)
+        PARA cada curso EN lista HACER
+            nombre = curso[0]
+            nota_anterior = curso[1]
+            curso[1] = nueva_nota
+            SI nueva_nota >= 60 ENTONCES
+                curso[2] = "Aprobado"
+            SINO
+                curso[2] = "Reprobado"
+            FIN SI
+            IMPRIMIR "Nota actualizada exitosamente"
+            AÑADIR "Se actualizó: " + nombre + " - Nota anterior: " + nota_anterior + " -> Nueva nota: " + nueva_nota A historial
+        FIN PARA
+    FIN PROCEDIMIENTO
 
 
+    PROCEDIMIENTO eliminar_curso(lista_cursos, busqueda)
+        busqueda = MINUSCULAS(busqueda)
+        encontrados = buscar_curso(lista_cursos, busqueda)
+
+        SI longitud(encontrados) = 0 ENTONCES
+            IMPRIMIR "No se encontraron cursos con ", busqueda
+            RETORNAR
+        FIN SI
+
+        curso_a_eliminar = encontrados[0]
+        IMPRIMIR "Curso encontrado:", curso_a_eliminar[0]
+
+        IMPRIMIR "¿Desea eliminar el curso? (sí/no)"
+        LEER confirmacion
+        SI confirmacion EN ["sí", "si", "s"] ENTONCES
+            ELIMINAR curso_a_eliminar DE lista_cursos
+            AÑADIR "Se eliminó: " + curso_a_eliminar[0] A historial
+            IMPRIMIR "Curso eliminado exitosamente"
+        SINO
+            IMPRIMIR "Eliminación cancelada"
+        FIN SI
+    FIN PROCEDIMIENTO
 
 
-						
+    FUNCION ordenamiento_por_nota(lista)
+        n = longitud(lista)
+        changed = VERDADERO
+        comps = 0
+        swaps = 0
+
+        MIENTRAS changed = VERDADERO HACER
+            changed = FALSO
+            PARA i DESDE 0 HASTA n - 2 HACER
+                comps = comps + 1
+                SI lista[i][1] < lista[i+1][1] ENTONCES
+                    INTERCAMBIAR lista[i] Y lista[i+1]
+                    swaps = swaps + 1
+                    changed = VERDADERO
+                FIN SI
+            FIN PARA
+            n = n - 1
+        FIN MIENTRAS
+        RETORNAR comps, swaps, lista
+    FIN FUNCION
 
 
-Nombre: Wilmer Missael González Oroxón
-						Carnet: 7590-25-282
-						Sección: A
-						Fecha: 08/08/2025
+    FUNCION ordenamiento_por_nombre(lista)
+        comps = 0
+        movimientos = 0
+        PARA i DESDE 1 HASTA longitud(lista)-1 HACER
+            curso = lista[i]
+            clave = MINUSCULAS(curso[0])
+            j = i - 1
+            MIENTRAS j >= 0 Y MINUSCULAS(lista[j][0]) > clave HACER
+                lista[j+1] = lista[j]
+                movimientos= movimientos + 1
+                j = j - 1
+            FIN MIENTRAS
+            lista[j+1] = curso
+        FIN PARA
+        RETORNAR comps, movimientos, lista
+    FIN FUNCION
 
 
-Pseudocódigo
-Inicio
-Estructura
-Cursos(Lista de Cursos)
-nombre.curso
-nota.curso
+    FUNCION busqueda_por_nombre_binario(lista, busqueda)
+        min = 0
+        max = longitud(lista) - 1
+        busqueda = MINUSCULAS(busqueda)
 
-Mientras opcion =! 13 Hacer 
-Imprimir ===========Gestor de Notas Académicas========
-Imprimir 1. Registrar nuevo curso 
-Imprimir 2. Mostrar todos los cursos y notas 
-Imprimir 3. Calcular promedio general
-Imprimir 4. Contar cursos aprobados y reprobados
-Imprimir 5.  Buscar curso por nombre (búsqueda lineal)
-Imprimir 6. Actualizar nota de un curso
-Imprimir 7.  Eliminar curso
-Imprimir 8. Ordenar cursos por nota
-Imprimir 9. Ordenar cursos por nombre
-Imprimir 10. Buscar curso por nombre 
-Imprimir 11. Simular cola de solicitudes de reviSión
-Imprimir 12 Mostrar historial de cambios
-Imprimir 13.Salir
-Imprimir Seleccione una opción:
-Leer opcion
-Mientras opción =!( >=1 y <=13) hacer
- Imprimir Seleccione una opción valida:
-Leer opción
-Fin mientras
-Si opcion = 1 entonces
-Imprimir ===== Registrar nuevo curso======
-Imprimir Ingrese el nombre del curso
-Leer nombreCurso
-Imprimir Ingrese la nota del curso
-Leer cursoNota
-Proceso 
-Guardar datos en lista de cursos
-Imprimir Curso Registrado con éxito
-Sino Si opción =2 entonces
-Si Hay cursos ingresados entonces
-Imprimir Lista de cursos y notas
-Sino 
-Imprimir No hay cursos para mostrar
-Fin Si
-Sino SI opción =3 entonces
-Promedio = suma de todas las notas de los cursos dividido cantidad de cursos
-Imprimir Promedio general: Promedio
-Sino Si opción=4 entonces
-Para Cursos(lista de cursos Hacer
-Cursos aprobados = 0
-Cursos reprobados= 0
-Si curso.nota  >= 60 Entonces
-Cursos aprobados= cursos aprobados + 1
-Sino
-Cursos reprobados = cursos reprobados +1
-Fin Si
-Fin Para
-Imprimir Cursos aprobados : cursos aprobados
-Imprimir cursos reprobados: cursos reprobados
-SINO SI opción = 5 entonces 
-Imprimir Buscar curso por nombre
-Imprimir Ingrese el nombre del curso 
-Leer buscarCurso
-Para Cursos(lista de cursos) Hacer
-Si nombre.curso == buscarCurso Entonces
-cursoEncontrado =  nombre.curso ,nota.curso
-Fin Si
-Fin para
-Imprimir cursoEncontrado
-SINO SI opción = 6 entonces 
-Imprimir Actualizar nota de curso
-Imprimir Ingrese el nombre del curso
-Leer NombreCurso
-Para Cursos(lista de cursos) Hacer
-Si NombreCurso == nombre.curso 	Entonces
-Imprimir Ingrese la nueva nota del curso
-Leer nota.curso
-Mientras nota.curso =! (>=1 y <=100) Hacer
-Imprimir Ingrese una nota valida de 1 a 100
-Leer nota.curso
-Fin Mientras
-Agregarla  la estructura del curso y guardarla
-Imprimir Nota actualizada correctamente
-Fin Si
-Fin para
-SINO SI opción = 7 entonces
-Imprimir Eliminar curso
-Imprimir Ingrese el nombre del curso
-Leer curso Nombre
-Para Cursos(lista de cursos) Hacer
-Si nombre.curso == curso Nombre entonces
-Eliminar Curso
-Fin Si 
-Fin Para
-Imprimir Cursos Eliminado
-SINO SI opción = 8 entonces 
-Ordenar los cursos de mayor a menor
-Imprimir Cursos ordenados
-SINO SI opción = 9 entonces
-Ordenar los cursos alfabéticamente
-Imprimir Lista de los cursos
-Sino SI opción = 10 Entonces
-Imprimir Buscar curso por nombre
-Imprimir Ingrese el nombre del curso
-Leer nombre
-Buscar el curso en la lista de cursos
-Imprimir nombre.curso, nota.curso
-SiNO SI opción = 11 Entonces
-Imprimir Simular cola de solicitudes de reviSión
-Imprimir Ingrese los nombres de los cursos que desea enviar a revisar y escriba Fin al terminar
-Leer nombrecurso
-Imprimir nombrecurso revisado
-SINO SI opción =12 Entonces
-Imprimir Historial de cambios recientes
-Imprimir Muestra el historial de cambios
-Sino SI opción = 13 entones
-Imprimir Gracias por usar el Gestor de Notas Academicas
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Si
-Fin Mientras
-Fin
+        MIENTRAS min <= max HACER
+            medio = (min + max) DIV 2
+            nombre_curso = MINUSCULAS(lista[medio][0])
 
+            SI busqueda ESTÁ EN nombre_curso ENTONCES
+                RETORNAR lista[medio]
+            SINO SI busqueda < nombre_curso ENTONCES
+                max = medio - 1
+            SINO
+                min = medio + 1
+            FIN SI
+        FIN MIENTRAS
+        RETORNAR -1
+    FIN FUNCION
+
+
+    PROCEDIMIENTO solicitud_de_revision()
+        solicitudes = LISTA VACÍA
+        MIENTRAS VERDADERO HACER
+            IMPRIMIR "Ingrese curso para revisión (fin para terminar):"
+            LEER n
+            SI n = "FIN" ENTONCES
+                SALIR DEL BUCLE
+            SINO
+                AÑADIR n A solicitudes
+            FIN SI
+        FIN MIENTRAS
+
+        SI longitud(solicitudes) = 0 ENTONCES
+            IMPRIMIR "No hay solicitudes ingresadas."
+        SINO
+            IMPRIMIR "Procesando solicitudes:"
+            PARA cada i EN solicitudes HACER
+                IMPRIMIR "Revisando:", i
+            FIN PARA
+        FIN SI
+    FIN PROCEDIMIENTO
+
+    PROCEDIMIENTO mostrar_historial()
+        SI longitud(historial) = 0 ENTONCES
+            IMPRIMIR "No hay historial de cambios."
+        SINO
+            IMPRIMIR "Historial de cambios:"
+            PARA cada cambio EN historial HACER
+                IMPRIMIR cambio
+            FIN PARA
+        FIN SI
+    FIN PROCEDIMIENTO
+
+
+    MENÚ PRINCIPAL 
+
+    MIENTRAS VERDADERO HACER
+        IMPRIMIR "GESTOR DE NOTAS ACADÉMICAS “
+        IMPRIMIR "1. Registrar nuevo curso"
+        IMPRIMIR "2. Mostrar todos los cursos"
+        IMPRIMIR "3. Calcular promedio general"
+        IMPRIMIR "4. Contar cursos aprobados y reprobados"
+        IMPRIMIR "5. Buscar curso por nombre"
+        IMPRIMIR "6. Actualizar nota de curso"
+        IMPRIMIR "7. Eliminar curso"
+        IMPRIMIR "8. Ordenar cursos por nota"
+        IMPRIMIR "9. Ordenar cursos por nombre"
+        IMPRIMIR "10. Buscar curso (binaria)"
+        IMPRIMIR "11. Solicitudes de revisión"
+        IMPRIMIR "12. Mostrar historial"
+        IMPRIMIR "13. Salir"
+IMPRIMIR “Seleccione una opcion: "
+LEER opcion
+
+        SEGÚN opcion HACER
+            CASO 1:
+                IMPRIMIR "Registrar nuevo curso"
+	   IMPRIMIR “Ingrese el nombre del curso”
+                LEER nombre
+	   MIENTRAS nombre = “ “ HACER
+		IMPRIMIR “Ingrese un nombre valido”
+		LEER nombre
+	   IMPRIMIR “Ingrese la nota del curso”
+                LEER nota
+                curso = nuevo_curso(nombre, nota)
+                AÑADIR curso A lista_cursos
+            CASO 2:
+	   SI lista_curso = vacia ENTONCES
+		IMPRIMIR “No hay cursos registrados”
+                mostrar_lista(lista_cursos)
+            CASO 3:
+                IMPRIMIR "Promedio general:", promedio_general(lista_cursos)
+            CASO 4:
+                aprobado, reprobado = cursos_aprobados(lista_cursos)
+                IMPRIMIR "Cursos aprobados:", aprobado, "Cursos reprobados:", reprobado
+            CASO 5:
+	   SI lista_curso = vacía ENTONCES
+	  	IMPRIMIR “No hay cursos registrados”
+                LEER busqueda
+                mostrar_busqueda(buscar_curso(lista_cursos, busqueda), busqueda)
+            CASO 6:
+                LEER busqueda
+                encontrado = buscar_curso(lista_cursos, busqueda)
+                SI encontrado ≠ [] ENTONCES
+                    LEER nueva_nota
+                    actualizar_nota(encontrado, nueva_nota)
+                FIN SI
+            CASO 7:
+                LEER busqueda
+                eliminar_curso(lista_cursos, busqueda)
+            CASO 8:
+                ordenamiento_por_nota(lista_cursos)
+            CASO 9:
+                ordenamiento_por_nombre(lista_cursos)
+            CASO 10:
+                LEER busqueda
+                busqueda_por_nombre_binario(lista_cursos, busqueda)
+            CASO 11:
+                solicitud_de_revision()
+            CASO 12:
+                mostrar_historial()
+            CASO 13:
+                IMPRIMIR "Fin del programa"
+                SALIR DEL BUCLE
+        FIN SEGÚN
+    FIN MIENTRAS
+
+FIN
